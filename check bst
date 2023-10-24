@@ -1,0 +1,41 @@
+Given the root of a binary tree. Check whether it is a BST or not.
+Note: We are considering that BSTs can not contain duplicate Nodes.
+A BST is defined as follows:
+
+The left subtree of a node contains only nodes with keys less than the node's key.
+The right subtree of a node contains only nodes with keys greater than the node's key.
+Both the left and right subtrees must also be binary search trees.
+
+
+  class TreeNode:
+    def __init__(self, val=0, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+def isBST(root):
+    # Helper function to check if a subtree is a valid BST within a certain range.
+    def isBSTHelper(node, min_val, max_val):
+        if not node:
+            return True
+
+        # Check if the current node's value is within the valid range.
+        if node.val <= min_val or node.val >= max_val:
+            return False
+
+        # Recursively check the left and right subtrees with updated ranges.
+        return (isBSTHelper(node.left, min_val, node.val) and
+                isBSTHelper(node.right, node.val, max_val))
+
+    # Start with an initial range of negative infinity to positive infinity.
+    return isBSTHelper(root, float('-inf'), float('inf'))
+
+# Example usage:
+root = TreeNode(2)
+root.left = TreeNode(1)
+root.right = TreeNode(3)
+
+if isBST(root):
+    print("It's a BST")
+else:
+    print("It's not a BST")
